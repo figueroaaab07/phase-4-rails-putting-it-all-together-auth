@@ -7,8 +7,8 @@ class RecipesController < ApplicationController
   end
 
   def create
-    # user = User.find(session[:user_id])
-    recipe = Recipe.create!(recipe_params)
+    current_user = User.find(session[:user_id])
+    recipe = current_user.recipes.create!(recipe_params)
     render json: recipe, include: :user, status: :created
   end
 
@@ -17,8 +17,4 @@ class RecipesController < ApplicationController
   def recipe_params
     params.permit(:id, :title, :instructions, :minutes_to_complete)
   end
-
-  # def authorize
-  #   render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :user_id
-  # end
 end
